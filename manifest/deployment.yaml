@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: takanashi-nginx-container
-          image: f25681/nginx_php_sample:1.0.9
+          image: f25681/nginx_php_sample:2.0.2
           ports:
             - containerPort: 80
           readinessProbe:

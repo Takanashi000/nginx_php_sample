@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>時鐘和 IP</title>
+    <title>Takanashi php</title>
     <style>
-        .clock {
-            font-size: 48px;
-            text-align: center;
-            margin-top: 100px;
+        table {
+            border-collapse: collapse;
+            margin: 20px auto;
         }
-        .ip {
-            font-size: 24px;
-            text-align: center;
+        th, td {
+            padding: 10px;
+            border: 1px solid black;
         }
     </style>
     <script>
@@ -20,7 +19,7 @@
         function updateTime() {
             var currentTime = new Date();
             var formattedTime = currentTime.getFullYear() + "-" + padZero(currentTime.getMonth() + 1) + "-" + padZero(currentTime.getDate()) + " " + padZero(currentTime.getHours()) + ":" + padZero(currentTime.getMinutes()) + ":" + padZero(currentTime.getSeconds());
-            document.getElementById("clock").innerText = "當前時間：" + formattedTime;
+            document.getElementById("clock").innerText = "TimeNow： " + formattedTime;
         }
 
         // 補零函數，用於確保時間格式一致
@@ -30,12 +29,32 @@
     </script>
 </head>
 <body>
-    <div class="clock" id="clock">
-        <!-- 時間將由 JavaScript 更新 -->
-    </div>
-    <div class="ip">
-        <?php echo "IP Address：" . $_SERVER['HTTP_X_FORWARDED_FOR']; ?>
-    </div>
+    <table>
+        <tr>
+            <td id="clock">TimeNow： <!-- 時間將由 JavaScript 更新 --></td>
+        </tr>
+        <tr>
+            <td><?php echo "Nginx Version: " . $_SERVER['SERVER_SOFTWARE']; ?></td>
+        </tr>
+        <tr>
+            <td><?php echo "PHP Version: " . phpversion(); ?></td>
+        </tr>
+        <tr>
+            <td><?php echo gmdate('Y-m-d H:i:s'); ?></td>
+        </tr>
+        <tr>
+            <td><?php echo "Server Public IP: " . shell_exec("curl ifconfig.me"); ?></td>
+        </tr>
+        <tr>
+            <td><?php echo "Server Private IP: " . $_SERVER['SERVER_ADDR'] . ": " .$_SERVER['SERVER_PORT']; ?></td>
+        </tr>
+        <tr>
+            <td><?php echo "Client Public IP: " . $_SERVER['HTTP_X_FORWARDED_FOR'] . ": " . $_SERVER["REMOTE_PORT"]; ?></td>
+        </tr>
+    </table>
 </body>
 </html>
 
+<?php
+phpinfo();
+?>
