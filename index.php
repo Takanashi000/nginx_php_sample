@@ -34,7 +34,7 @@
         <!-- 時間將由 JavaScript 更新 -->
     </div>
     <div class="ip">
-        <?php echo "當前IP：" . $_SERVER['REMOTE_ADDR']; ?>
+        <?php echo "IP Address：" . $_SERVER['HTTP_X_FORWARDED_FOR']; ?>
     </div>
 </body>
 </html>

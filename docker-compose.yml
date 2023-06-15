@@ -1,6 +1,8 @@
 version: '3'
 services:
   web:
-    image: f25681/nginx_php_sample:1.0.1
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - 80:80
