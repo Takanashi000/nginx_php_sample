@@ -3,6 +3,7 @@ name: githubCI
 env: 
     AWS_REGION: ap-southeast-1 
     BUILD_VERSION: v${{github.run_number}}-build
+    SERVICE_NAME: ${{ github.event.repository.name }}
 
 on: 
   push:
