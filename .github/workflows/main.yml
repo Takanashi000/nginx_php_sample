@@ -1,0 +1,14 @@
+name: githubCI
+
+on: 
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: action/checkout@v2
+      
+      - name: echo test
+        run: echo hello world
