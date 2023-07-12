@@ -32,7 +32,7 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
               echo "IMAGE_TAG=$BUILD_VERSION-$VERSION" >> $GITHUB_ENV
-              echo "IMAGE_REPO=$ECR_REGISTRY/takanashi-nginx-test" >> $GITHUB_ENV
+              echo "IMAGE_REPO=$ECR_REGISTRY/$SERVICE_NAME" >> $GITHUB_ENV
 
       - name: Build docker image
         run: |
