@@ -33,7 +33,7 @@ jobs:
         run: |
               VERSION=$(cat VERSION)
               echo "IMAGE_TAG=$BUILD_VERSION-$VERSION" >> $GITHUB_ENV
-              echo "IMAGE_REPO=$ECR_REGISTRY/$SERVICE_NAME" >> $GITHUB_ENV
+              echo "IMAGE_REPO=$ECR_REGISTRY/takanashi-nginx-test" >> $GITHUB_ENV
 
       - name: Build docker image
         run: |
