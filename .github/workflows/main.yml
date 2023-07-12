@@ -31,6 +31,7 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
+              VERSION=$(cat VERSION)
               echo "IMAGE_TAG=$BUILD_VERSION-$VERSION" >> $GITHUB_ENV
               echo "IMAGE_REPO=$ECR_REGISTRY/$SERVICE_NAME" >> $GITHUB_ENV
 
