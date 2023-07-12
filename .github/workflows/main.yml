@@ -1,5 +1,9 @@
 name: githubCI
 
+env: 
+    AWS_REGION: ap-southeast-1 
+    BUILD_VERSION: v${{github.run_number}}-build
+
 on: 
   push:
   workflow_dispatch:
@@ -8,7 +12,41 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      
-      - name: echo test
-        run: echo hello world
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+        
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+          
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1                      
+
+      - name: Setup Variables
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        run: |
+              cd $SERVICE_NAME
+              echo "IMAGE_TAG=$BUILD_VERSION-$VERSION" >> $GITHUB_ENV
+              echo "IMAGE_REPO=$ECR_REGISTRY/takanashi-nginx-test" >> $GITHUB_ENV
+
+      - name: Build docker image
+        run: |
+              cd $SERVICE_NAME
+              docker build -t $IMAGE_REPO:$IMAGE_TAG \
+                          -t $IMAGE_REPO:latest \
+                          -f Dockerfile .
+              docker push $IMAGE_REPO:$IMAGE_TAG
+              docker push $IMAGE_REPO:latest
+          
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env: 
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_COLOR: '#3278BD'
+          SLACK_CHANNEL: lab-takanashi
+          SLACK_USERNAME: GITHUB_ACTION
